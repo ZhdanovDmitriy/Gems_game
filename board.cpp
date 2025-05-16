@@ -21,6 +21,13 @@ int find(std::vector<T> array, T element) {
     return -1;
 }
 
+static Color randomNormalColor() {
+    static const std::vector<Color> colors = {
+        Color::RED, Color::GREEN, Color::BLUE, Color::YELLOW, Color::CYAN
+    };
+    return colors[rand() % colors.size()];
+}
+
 std::vector<GEM*> getNear(GEM** matrix, GEM* gem) {
     std::vector<GEM*> result;
 
@@ -353,6 +360,33 @@ void Board::checkToDelete() {
     check.clear();
 }
 
+void Board::refill() {
+    for (int row = 0; row < size_x; ++row) {
+        for (int col = 0; col < size_y; ++col) {
+            GEM& gem = matrix[row][col];
+            if (gem.color == Color::UNSELECTED) {
+                gem.selectColor(randomNormalColor());
+                gem.draw = sf::CircleShape(static_cast<float>(GEM::size - 2));
+
+                switch (gem.color) {
+                case Color::RED:    gem.draw.setFillColor(sf::Color::Red);    break;
+                case Color::GREEN:  gem.draw.setFillColor(sf::Color::Green);  break;
+                case Color::BLUE:   gem.draw.setFillColor(sf::Color::Blue);   break;
+                case Color::YELLOW: gem.draw.setFillColor(sf::Color::Yellow); break;
+                case Color::CYAN:   gem.draw.setFillColor(sf::Color::Cyan);   break;
+                default:            gem.draw.setFillColor(sf::Color::White);  break;
+                }
+
+                gem.setPosition(row, col);
+                gem.draw.setPosition(
+                    indent_x + 2 * GEM::size * col,
+                    indent_y + 2 * GEM::size * row
+                );
+            }
+        }
+    }
+}
+
 void Board::render(sf::RenderWindow& window) {
     for (int row = 0; row < size_x; row++) {
         for (int col = 0; col < size_y; col++) {
@@ -388,8 +422,14 @@ void Board::update(sf::RenderWindow& window) {
         window.clear();
         render(window);
         window.display();
+
         checkToDelete();
+
         fall();
+
+        if (!fallAnimation) {
+            refill();
+        }
     }
 }
 

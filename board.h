@@ -38,6 +38,8 @@ public:
 
     void checkToDelete();
 
+    void refill();
+
     void update(sf::RenderWindow& window);
 
     void render(sf::RenderWindow& window);

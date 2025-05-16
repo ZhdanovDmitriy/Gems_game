@@ -32,7 +32,7 @@ GEM::GEM(Color _color) : GEM() {
 
 Bomb::Bomb() : GEM() {
 	color = Color::BOMB;
-	draw = sf::CircleShape(size-2, 6);
+	draw = sf::CircleShape(size-2, 4);
 	draw.setFillColor(sf::Color(144, 144, 144));
 }
 
