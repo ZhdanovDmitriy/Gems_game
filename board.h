@@ -24,6 +24,8 @@ public:
 
     void swap(GEM* first, GEM* second, bool onlyNear);
 
+    void internalSwap(GEM* first, GEM* second);
+
     void fall();
 
     void explosion(GEM* bomb);

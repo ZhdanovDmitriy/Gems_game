@@ -172,10 +172,33 @@ void Board::swap(GEM* first, GEM* second) {
 }
 
 void Board::swap(GEM* first, GEM* second, bool onlyNear) {
-    if ((!isNear(first, second)) && onlyNear)
+    if (onlyNear && !isNear(first, second))
         return;
 
-    swap(first, second);
+    internalSwap(first, second);
+
+    auto group1 = searchInWidth(matrix, first);
+    auto group2 = searchInWidth(matrix, second);
+
+    if (group1.size() < 3 && group2.size() < 3) {
+        internalSwap(first, second);
+        return;
+    }
+
+    check.push_back(first);
+    check.push_back(second);
+}
+
+void Board::internalSwap(GEM* first, GEM* second){
+    std::swap(matrix[first->pos_x][first->pos_y], matrix[second->pos_x][second->pos_y]);
+
+    std::swap(first->pos_x, second->pos_x);
+    std::swap(first->pos_y, second->pos_y);
+
+    sf::Vector2f posA = first->draw.getPosition();
+    sf::Vector2f posB = second->draw.getPosition();
+    first->draw.setPosition(posB);
+    second->draw.setPosition(posA);
 }
 
 void Board::fall() {
