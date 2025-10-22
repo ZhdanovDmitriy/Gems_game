@@ -1,0 +1,16 @@
+.vs/
+*.vcxproj.user
+*.user
+*.opensdf
+*.sdf
+*.cache
+*.VC.db
+*.VC.VC.opendb
+x64/
+Debug/
+Release/
+ipch/
+bin/
+obj/
+sfml-*.dll
+Gems/
